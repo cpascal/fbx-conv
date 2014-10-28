@@ -808,7 +808,10 @@ namespace readers {
                         if(time < 0) continue;// discard time < 0
                         fbxTime.SetMilliSeconds((FbxLongLong)time);
                         Keyframe *kf = new Keyframe();
-                        kf->time = time;// - animStart;
+                        if( settings->useAnimationStartTime )
+                            kf->time = time - animStart;
+                        else 
+                            kf->time = time;
                         FbxAMatrix *m = &(*itr).first->EvaluateLocalTransform(fbxTime);
                         FbxVector4 v = m->GetT();
                         kf->translation[0] = (float)v.mData[0];
@@ -835,7 +838,10 @@ namespace readers {
                         if(time < 0) continue;// discard time < 0
                         fbxTime.SetMilliSeconds((FbxLongLong)time);
                         Keyframe *kf = new Keyframe();
-                        kf->time = time;// - animStart;
+                        if( settings->useAnimationStartTime )
+                            kf->time = time - animStart;
+                        else 
+                            kf->time = time;
                         FbxAMatrix *m = &(*itr).first->EvaluateLocalTransform(fbxTime);
                         FbxVector4 v = m->GetT();
                         kf->translation[0] = (float)v.mData[0];
@@ -857,12 +863,14 @@ namespace readers {
                 if(frames.size() == 0)
                     continue;
 
-                float lengh = animStop;
+                float length = animStop;
+                if( settings->useAnimationStartTime )
+                    length -= animStart;
                 
-                animation->length = lengh / 1000.f;
+                animation->length = length / 1000.f;
 
 				// Only add keyframes really needed
-                addKeyframes(nodeAnim, frames, lengh);
+                addKeyframes(nodeAnim, frames, length);
 				if (nodeAnim->rotate || nodeAnim->scale || nodeAnim->translate)
 					animation->nodeAnimations.push_back(nodeAnim);
 				else

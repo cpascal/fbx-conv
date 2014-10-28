@@ -48,6 +48,7 @@ struct FbxConvCommand {
         settings->needReusableMesh = true;
         settings->forceMaxVertexBoneCount = true;
         settings->compressLevel = COMPRESS_LEVEL_DEFAULT;
+        settings->useAnimationStartTime = false;
             
 		for (int i = 1; i < argc; i++) {
 			const char *arg = argv[i];
@@ -75,6 +76,8 @@ struct FbxConvCommand {
 					settings->maxVertexCount = settings->maxIndexCount = atoi(argv[++i]);
                 else if((arg[1] == 'c') && (i + 1 < argc))
                     settings->compressLevel = (COMPRESS_LEVEL)atoi(argv[++i]);
+                else if(arg[1] == 's')
+                    settings->useAnimationStartTime = true;
                 else if(arg[1] == 'b')
 					settings->outType = FILETYPE_C3B;
 				else if(arg[1] == 't')
@@ -126,6 +129,7 @@ struct FbxConvCommand {
         printf("-b       : export c3b(binary)\n");
         printf("-t       : export c3t(text)\n");
         printf("-c <size>: The compression level: 0 , 1 (default: 0)\n");
+        printf("-s       : Use the FBX Bake Animation's start time\n");
 		printf("\n");
 		printf("<input>  : The filename of the file to convert.\n");
 		printf("<output> : The filename of the converted file.\n");

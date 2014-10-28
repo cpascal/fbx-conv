@@ -64,6 +64,8 @@ struct Settings {
     bool needReusableMesh;
     /** The level of compression, you may lose some animation detail when useing high compression level*/
     COMPRESS_LEVEL compressLevel;
+	/** Whether to use AnimationStartTime in the FBX. */
+	bool useAnimationStartTime;
 };
 
 }
